@@ -1,19 +1,15 @@
 {
-  "name": "create-xeel-cli-plugin",
-  "version": "1.0.3",
-  "description": "A boilerplate for creating a Xeel CLI plugin",
+  "name": "@xeel-dev/cli-python-plugin",
+  "version": "1.0.0",
+  "description": "A plugin to add python ecosystem support for Xeel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xeel-dev/create-xeel-cli-plugin.git"
-  },
-  "bin": {
-    "create-xeel-cli-plugin": "./bin/create-xeel-cli-plugin.js"
+    "url": "git+https://github.com/xeel-dev/cli-python-plugin.git"
   },
   "scripts": {
-    "create": "node bin/create-xeel-cli-plugin.js",
     "prebuild": "shx rm -rf dist",
     "build": "tsc -b",
     "postpack": "shx rm -f oclif.manifest.json",
@@ -24,6 +20,7 @@
   "license": "MIT",
   "packageManager": "pnpm@9.14.2",
   "dependencies": {
+    "@actions/exec": "^1.1.1",
     "@oclif/core": "^4"
   },
   "devDependencies": {
@@ -46,8 +43,8 @@
     }
   },
   "oclif": {
-    "bin": "xeel-example-plugin",
-    "dirname": "create-xeel-cli-plugin",
+    "bin": "xeel-python-plugin",
+    "dirname": "cli-python-plugin",
     "commands": "./dist/commands",
     "hooks": {
       "register-ecosystem": "./dist/hooks/register-ecosystem.js"
