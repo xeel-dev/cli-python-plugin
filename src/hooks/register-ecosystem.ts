@@ -1,7 +1,7 @@
-import type { Hook } from '@oclif/core';
-import PythonEcosystemSupport from '../ecosystem.js';
+import type { Hook } from "@oclif/core";
+import PythonEcosystemSupport from "../ecosystem.js";
 
-const hook: Hook<'register-ecosystem'> = async function () {
+const hook: Hook<"register-ecosystem"> = async function () {
   return new PythonEcosystemSupport();
 };
 

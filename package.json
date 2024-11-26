@@ -14,7 +14,9 @@
     "build": "tsc -b",
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "oclif manifest",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "prettier --check 'src/**/*.ts'",
+    "lint:fix": "prettier --write 'src/**/*.ts'"
   },
   "author": "felix@xeel.dev",
   "license": "MIT",

@@ -1,14 +1,14 @@
-import { exec } from '@actions/exec';
+import { exec } from "@actions/exec";
 import type {
   Dependency,
   EcosystemSupport,
   Project,
   RootProject,
-} from '@xeel-dev/cli/ecosystem-support';
-import { readdir, stat } from 'node:fs/promises';
-import { join, sep } from 'node:path';
+} from "@xeel-dev/cli/ecosystem-support";
+import { readdir, stat } from "node:fs/promises";
+import { join, sep } from "node:path";
 
-const ECOSYSTEM_NAME = 'PYTHON';
+const ECOSYSTEM_NAME = "PYTHON";
 
 type PythonProject = Project<typeof ECOSYSTEM_NAME>;
 type PythonRootProject = RootProject<typeof ECOSYSTEM_NAME>;
@@ -19,7 +19,7 @@ interface PyPiRelease {
   yanked: boolean;
 }
 
-const PROJECT_MARKER_FILES = ['requirements.txt', 'pyproject.toml'];
+const PROJECT_MARKER_FILES = ["requirements.txt", "pyproject.toml"];
 
 export default class PythonEcosystemSupport
   implements EcosystemSupport<typeof ECOSYSTEM_NAME>
@@ -44,7 +44,10 @@ export default class PythonEcosystemSupport
       const fileStat = await stat(filePath);
       if (fileStat.isDirectory()) {
         projects.push(...(await this.findProjects(filePath, depth + 1)));
-      } else if (PROJECT_MARKER_FILES.includes(file) && !projects.some((p) => p.path === dir)) {
+      } else if (
+        PROJECT_MARKER_FILES.includes(file) &&
+        !projects.some((p) => p.path === dir)
+      ) {
         projects.push({
           ecosystem: ECOSYSTEM_NAME,
           name: dir.split(sep).pop() || dir,
@@ -109,7 +112,7 @@ export default class PythonEcosystemSupport
     project: PythonProject,
   ): Promise<PythonDependency[]> {
     const outdatedDeps: PythonDependency[] = [];
-    await exec('pip', ['list', '--outdated', '--format', 'json'], {
+    await exec("pip", ["list", "--outdated", "--format", "json"], {
       cwd: project.path,
       listeners: {
         stdout: async (data: Buffer) => {
@@ -117,7 +120,7 @@ export default class PythonEcosystemSupport
             const outdated = JSON.parse(data.toString());
             const deps: PythonDependency[] = outdated.map((dep: any) => ({
               name: dep.name,
-              type: 'PROD',
+              type: "PROD",
               ecosystem: ECOSYSTEM_NAME,
               current: { version: dep.version },
               latest: { version: dep.latest_version },
@@ -127,7 +130,7 @@ export default class PythonEcosystemSupport
             if (e instanceof Error) {
               console.error(`Failed to parse pip list output: ${e.message}`);
             } else {
-              console.error('Failed to parse pip list output');
+              console.error("Failed to parse pip list output");
             }
           }
         },

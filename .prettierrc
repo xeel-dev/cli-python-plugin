@@ -1,5 +1,0 @@
-{
-  "extends": ["@oclif/prettier-config"],
-  "plugins": ["prettier-plugin-organize-imports"],
-  "singleQuote": true
-}
