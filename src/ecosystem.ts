@@ -138,4 +138,32 @@ export default class PythonEcosystemSupport
     });
     return outdatedDeps;
   }
+
+  async countDependencies(project: Project<"PYTHON">): Promise<number> {
+    let count = 0;
+    const exitCode = await exec("pip", ["list", "--format", "json"], {
+      cwd: project.path,
+      listeners: {
+          stdout: async (data: Buffer) => {
+            try {
+              const deps = JSON.parse(data.toString());
+              count = deps.length;
+            } catch (e) {
+              if (e instanceof Error) {
+                console.error(`Failed to parse pip list output: ${e.message}`);
+              } else {
+                console.error("Failed to parse pip list output");
+              }
+            }
+          }
+        },
+    });
+    if (exitCode !== 0) {
+      console.error("Failed to count dependencies", { 
+        project: project.name,
+      });
+      throw new Error("Failed to count dependencies");
+    }
+    return count;
+  }
 }
