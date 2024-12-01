@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/xeel-dev/cli-python-plugin/compare/v1.0.0...v1.1.0) (2024-12-01)
+
+
+### Features
+
+* add ability to count project dependencies ([477c087](https://github.com/xeel-dev/cli-python-plugin/commit/477c08761a95cc1e67b8d8f8a3b9eba4487fb568))
+
 ## 1.0.0 (2024-11-26)
 
 
