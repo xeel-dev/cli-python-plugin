@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/xeel-dev/cli-python-plugin/compare/v1.1.0...v1.1.1) (2025-01-14)
+
+
+### Bug Fixes
+
+* **misc:** wait for pypi response ([51caa5d](https://github.com/xeel-dev/cli-python-plugin/commit/51caa5d59d0dcc78a523e82eb69b99f77cee4e10))
+
 ## [1.1.0](https://github.com/xeel-dev/cli-python-plugin/compare/v1.0.0...v1.1.0) (2024-12-01)
 
 
