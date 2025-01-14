@@ -1,6 +1,6 @@
 {
   "name": "@xeel-dev/cli-python-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A plugin to add python ecosystem support for Xeel",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
