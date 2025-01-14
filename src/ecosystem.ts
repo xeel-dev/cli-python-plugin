@@ -60,6 +60,7 @@ export default class PythonEcosystemSupport
     return projects;
   }
 
+
   private async getPyPiRelease(
     deps: PythonDependency[],
     outdatedDeps: PythonDependency[],
@@ -112,30 +113,35 @@ export default class PythonEcosystemSupport
     project: PythonProject,
   ): Promise<PythonDependency[]> {
     const outdatedDeps: PythonDependency[] = [];
+    const releaseAugmentations: Promise<void>[] = [];
+    const listener = async (data: Buffer) => {
+      try {
+        const outdated = JSON.parse(data.toString());
+        const deps: PythonDependency[] = outdated.map((dep: any) => ({
+          name: dep.name,
+          type: "PROD",
+          ecosystem: ECOSYSTEM_NAME,
+          current: { version: dep.version },
+          latest: { version: dep.latest_version },
+        }));
+        releaseAugmentations.push(this.getPyPiRelease(deps, outdatedDeps));
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(`Failed to parse pip list output: ${e.message}`);
+        } else {
+          console.error("Failed to parse pip list output");
+        }
+      }
+    };
     await exec("pip", ["list", "--outdated", "--format", "json"], {
       cwd: project.path,
       listeners: {
-        stdout: async (data: Buffer) => {
-          try {
-            const outdated = JSON.parse(data.toString());
-            const deps: PythonDependency[] = outdated.map((dep: any) => ({
-              name: dep.name,
-              type: "PROD",
-              ecosystem: ECOSYSTEM_NAME,
-              current: { version: dep.version },
-              latest: { version: dep.latest_version },
-            }));
-            await this.getPyPiRelease(deps, outdatedDeps);
-          } catch (e) {
-            if (e instanceof Error) {
-              console.error(`Failed to parse pip list output: ${e.message}`);
-            } else {
-              console.error("Failed to parse pip list output");
-            }
-          }
-        },
+        stdout: listener,
       },
+      silent: true,
+      ignoreReturnCode: true,
     });
+    await Promise.all(releaseAugmentations);
     return outdatedDeps;
   }
 
